@@ -39,6 +39,8 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'apps.persona',
     'apps.proyectotf',
+    'apps.evaluacion',
+    'apps.comision',
 ]
 
 MIDDLEWARE = [
@@ -76,8 +78,8 @@ TEMPLATES = [
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'gestion_trabajos_finales',
-        'USER': 'postgres',
+        'NAME': 'gestion_ptf',
+        'USER': 'administrador',
         'PASSWORD': '12345678',
     }
 }

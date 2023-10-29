@@ -24,13 +24,5 @@ class Alumno (Persona):
 class Asesor (Persona):
     curriculum = models.FileField()
 
-class Miembro_CSTF (Docente):
-    resolucion_asignacion = models.IntegerField(unique=True)
-
-class Miembro_TE (Docente):
-    fecha_disposicion = models.DateField()
-    numero_disposicion = models.IntegerField(unique=True)
-    rol = models.CharField(max_length=100)
-    archivo_disposicion = models.FileField()
 
 
