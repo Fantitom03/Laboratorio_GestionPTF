@@ -21,5 +21,17 @@ from django.views.generic import TemplateView
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', TemplateView.as_view(template_name='base/home.html'), name='home'),
-    # path('programa/', include('apps.programa.urls', namespace='programa')),
+    path('programa/', include('templates', namespace='programa')),
+]
+
+urlpatterns = [
+    path('admin/', admin.site.urls),
+    path('', TemplateView.as_view(template_name='home.html'), name='home'),
+    path('persona/', include('persona.urls', namespace='persona')),
+    path('comisiones/', include('comisiones.urls', namespace='comsiones')),
+    #path('regCSTF/', views.regCSTF),
+    #path('regTribunal/', views.regTribunal),
+    #path('regAlumno/', views.regAlumno),
+    #path('regPTF', ),
+    #path('regMovimientoPTF', ),
 ]
