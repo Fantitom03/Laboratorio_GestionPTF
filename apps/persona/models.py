@@ -1,9 +1,9 @@
 from django.db import models
 
 class Persona (models.Model):
-    dni = models.CharField(max_length=8, unique=True)
-    nombre = models.CharField(max_length=100)
-    apellido = models.CharField(max_length=100)
+    dni = models.CharField(max_length=8, unique=True, blank=False)
+    nombre = models.CharField(max_length=100, blank=False)
+    apellido = models.CharField(max_length=100, blank=False)
 
     @property
     def nombre_completo(self):
@@ -15,14 +15,14 @@ class Persona (models.Model):
         return '{}'.format(self.nombre_completo)
 
 class Docente (Persona):
-    cuil = models.CharField(max_length=11, unique=True)
+    cuil = models.CharField(max_length=11, unique=True, blank=False)
 
 class Alumno (Persona):
-    matricula = models.CharField(max_length=5, unique=True)
-    correo_electronico = models.EmailField(max_length=254)
+    matricula = models.CharField(max_length=5, unique=True, blank=False)
+    correo_electronico = models.EmailField(max_length=254, blank=False)
 
 class Asesor (Persona):
-    curriculum = models.FileField()
+    curriculum = models.FileField(null=True)
 
 
 

@@ -17,9 +17,9 @@ class Proyecto_TF(models.Model):
                                   on_delete=models.CASCADE)
     titulo_ptf = models.CharField(max_length=200)
     descripcion = models.TextField()
-    archivos_adjuntos = models.FileField()
-    certificado_analitico = models.FileField()
-    nota_aceptacion_director = models.FileField()
+    archivos_adjuntos = models.FileField(null=True)
+    certificado_analitico = models.FileField(null=True)
+    nota_aceptacion_director = models.FileField(null=True)
     estado = models.CharField(max_length=20, choices=estado_op)
     observaciones = models.CharField(max_length=500, null=True)
     cstf = models.ForeignKey(Miembro_CSTF, on_delete=models.CASCADE)
@@ -27,17 +27,6 @@ class Proyecto_TF(models.Model):
 
     def __str__(self):
         return f'Proyecto TF de {self.matricula}'
-
-
-"""
-# Obtener todos los alumnos de un proyecto específico
-proyecto = Proyecto_TF.objects.get(id=1)  # Reemplaza 1 con el ID del proyecto que deseas consultar
-alumnos_del_proyecto = proyecto.alumnos.all()
-
-# Iterar sobre los alumnos del proyecto
-for alumno in alumnos_del_proyecto:
-    print(alumno.nombre_completo)
-"""
 
 
 class Proyecto_TF_Alumno(models.Model):
@@ -54,10 +43,21 @@ class Informe_TF(models.Model):
     )
 
     alumno = models.ForeignKey('persona.Alumno', related_name='informe_tf', on_delete=models.CASCADE)
-    archivo_itf = models.FileField(upload_to='archivos_itf/')
+    archivo_itf = models.FileField(upload_to='archivos_itf/', null=True)
     proyecto_tf = models.ForeignKey(Proyecto_TF, related_name='informes_tf', on_delete=models.CASCADE)
     estado = models.CharField(max_length=20, choices=estado_op)
     observaciones = models.CharField(max_length=500, null=True)
 
     def __str__(self):
         return f'Informe TF de {self.matricula}'
+
+
+"""
+# Obtener todos los alumnos de un proyecto específico
+proyecto = Proyecto_TF.objects.get(id=1)  # Reemplaza 1 con el ID del proyecto que deseas consultar
+alumnos_del_proyecto = proyecto.alumnos.all()
+
+# Iterar sobre los alumnos del proyecto
+for alumno in alumnos_del_proyecto:
+    print(alumno.nombre_completo)
+"""
