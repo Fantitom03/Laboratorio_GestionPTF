@@ -2,14 +2,32 @@
 {% block titulo %}Listado de Proyectos{% endblock %}
 {% block contenido %}
   <br><br><br>
-  <h2>Listado de Proyectos</h2>
-  <ul>
-    {% for proyecto in proyectos %}
-      <li>{{ proyecto.titulo_ptf }}</li>
-      <li>{{ proyecto.fecha_presentacion }}</li>
 
-    {% empty %}
-      <li>No hay proyectos disponibles.</li>
-    {% endfor %}
-  </ul>
+
+  <a href="{% url 'evaluacion:evaluacionPTF_create' %}" class="btn btn-primary">Agregar MiembroCSTF</a>
+
+    <div id="resultados">
+        <table class="table table-bordered table-sm" style="justify-content: center;width: 65%; margin-left: auto; margin-right: auto;">
+            <thead>
+                <tr>
+                    <th scope="col">Titulo PTF</th>
+                    <th scope="col">Informe</th>
+                    <th scope="col">Fecha Evaluacion</th>
+                    <th scope="col">Estado</th>
+                    <th scope="col">Observaciones</th>
+                </tr>
+            </thead>
+            <tbody>
+            {% for evaluacion in evaluaciones %}
+                <tr>
+                    <td scope="row"><a href="{% url 'evaluacion:evaluacionPTF_detail' evaluacion.id %}">{{ evaluacion.proyecto_TF.titulo_ptf }}</a></td>
+                    <td>{{ evaluacion.informe }}</td>
+                    <td>{{ evaluacion.fecha_evaluacion }}</td>
+                    <td>{{ evaluacion.estado }}</td>
+                    <td>{{ evaluacion.observaciones }}</td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
 {% endblock %}

@@ -1,23 +1,15 @@
 {% extends "base/base.html" %}
 {% block titulo %}Evaluar Proyecto{{ proyecto.titulo_ptf }}{% endblock %}
 {% block contenido %}
+  <br>
+  <br>
+  <br>
   <h2>Evaluación del Proyecto {{ proyecto.titulo_ptf }}</h2>
-  <!-- Formulario para evaluar el proyecto -->
-  <form method="post" action="{% url 'evaluaciones:proyecto_evaluar' proyecto.pk %}">
+
+  <form method="post" action="{% url 'evaluacion:evaluacionPTF_create'%}">
     {% csrf_token %}
-    <!-- Campo de estado -->
-    <label for="id_estado">Estado:</label>
-    <select id="id_estado" name="estado">
-      <option value="aprobado">Aprobado</option>
-      <option value="rechazado">Rechazado</option>
-      <option value="observado">Observado</option>
-    </select>
+    {{ form.as_p }}
 
-    <!-- Campo de observaciones (con id para seleccionarlo con JavaScript) -->
-    <label for="id_observaciones">Observaciones:</label>
-    <textarea id="id_observaciones" name="observaciones" rows="4" cols="50"></textarea>
-
-    <!-- Botón de enviar -->
     <button type="submit">Evaluar Proyecto</button>
   </form>
 
