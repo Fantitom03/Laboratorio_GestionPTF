@@ -1,7 +1,24 @@
 {% extends "base/base.html" %}
 {% block titulo %}Detalles del Proyecto{{ proyecto.titulo_ptf }}{% endblock %}
 {% block contenido %}
-  <h2>{{ proyecto.titulo_ptf }}</h2>
-  <p>Descripción: {{ proyecto.descripcion }}</p>
-  <!-- Mostrar detalles del proyecto y evaluación aquí -->
+  <br>
+  <br>
+  <h2>{{ evaluacion.proyecto_TF.titulo_ptf }}</h2>
+  <p>Descripción: {{ evaluacion.proyecto_TF.descripcion }}</p>
+
+  <p>Informe: {{ evaluacion.informe }}</p>
+  <p>Fecha de Evaluación: {{ evaluacion.fecha_evaluacion }}</p>
+  <p>Estado: {{ evaluacion.estado }}</p>
+  <p>Observaciones: {{ evaluacion.observaciones }}</p>
+
+  <form action="{% url 'evaluacion:evaluacionPTF_delete' evaluacion.id %}" method="POST">
+    {% csrf_token %}
+    <input type="hidden" name="id_evaluacion" value="{{ evaluacion.id }}">
+    <input type="submit", value="Eliminar">
+    <a href="{% url 'evaluacion:evaluacionPTF_edit'  evaluacion.id %}" class="btn btn-primary">Editar</a>
+  </form>
+  <br>
+  <br>
+  <a href="{% url 'evaluacion:evaluacionPTF_list' %}">VOLVER</a>
+
 {% endblock %}
