@@ -1,0 +1,12 @@
+{% extends "base/base.html" %}
+{% block titulo %}Detalle Docentes{% endblock %}
+{% block contenido %}
+{% block tituloBarra %}Detalle Docentes{% endblock %}
+    {{ }}
+    <h1>Docente: {{ docente.nombre }}</h1>
+    <p><strong> El docente fue creado correctamente </strong></p>
+    <a href="{% url 'persona:docente_detail' docente.id %}">{{ docente.dni }}</a>
+
+
+
+{% endblock %}
