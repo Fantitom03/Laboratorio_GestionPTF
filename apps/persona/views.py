@@ -3,6 +3,7 @@ from django.urls import reverse
 from django.contrib import messages
 from .forms import DocenteForm, AlumnoForm, AsesorForm
 from .models import Docente, Alumno, Asesor, Persona
+from django.contrib.auth import authenticate, login, logout
 
 # Vista para mostrar todos los docentes
 def docente_list(request):
@@ -62,6 +63,9 @@ def docente_delete(request, pk):
         else:
             messages.error(request, 'Debe indicar qué Docente desea eliminar')
     return redirect(reverse('persona:docente_list'))
+
+
+
 
 #--------
 #ALUMNOS
@@ -185,3 +189,72 @@ def asesor_delete(request, pk):
         else:
             messages.error(request, 'Debe indicar qué Asesor desea eliminar')
     return redirect(reverse('persona:asesor_list'))
+
+#--------------------------------
+#--------------------------------
+#USER VIEWS
+#--------------------------------
+#--------------------------------
+
+def index(request):
+    if not request.user.is_authenticated:
+        return redirect(reverse("persona:login"))
+    return render(request, "persona/usuario.html")
+
+
+
+def login_view(request):
+    if request.method == "POST":
+        username = request.POST["username"]
+        password = request.POST["password"]
+        user = authenticate(request, username=username, password=password)
+        if user:
+            login(request, user)
+            return redirect(reverse("persona:index"))
+        else:
+            return render(request, "persona/login.html", { "msj": "Credencialesincorrectas" })
+    return render(request, "persona/login.html")
+
+
+
+def logout_view(request):
+    logout(request)
+    return render(request, "persona/login.html", { "msj": "Deslogueado" })
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

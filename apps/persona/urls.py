@@ -25,6 +25,10 @@ urlpatterns = [
     path('asesor_delete/<int:pk>/', views.asesor_delete, name='asesor_delete'),
     path('asesor_edit/<int:pk>/',views.asesor_edit, name='asesor_edit'),
 
+    #login views
+    path('', views.index, name="index"),
+    path("login", views.login_view, name="login"),
+    path("logout", views.logout_view, name="logout")
 
 ]
 

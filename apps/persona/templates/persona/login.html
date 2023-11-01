@@ -1,12 +1,17 @@
 {% extends "base/base.html" %}
-{% block titulo %}Login{% endblock %}
+{% block titulo %}Login nuevo{% endblock %}
 {% block contenido %}
+{% block tituloBarra %} LOGIN {% endblock %}
 
     <h2>Ingresa tus datos</h2>
 
     <br><br>
+		{% if msj %}
+				<div>{{ msj }}</div>
+		{% endif %}
 
-    <form action="./home/" method="post" style="display: grid; align-items: center; justify-content: center;">
+    <form method="post" action="{% url 'persona:login' %}" style="display: grid; align-items: center; justify-content: center;">
+				{% csrf_token %}
         <div class="mb-3">
           <input type="text" class="form-control" id="floatingInputGroup1" placeholder="Usuario" required>
         </div>
