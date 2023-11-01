@@ -1,0 +1,37 @@
+{% extends "base/base.html" %}
+{% block titulo %}Listado Miembros Tribunal Evaluador{% endblock %}
+{% block contenido %}
+{% block tituloBarra %}Listado Miembros Tribunal Evaluador{% endblock %}
+    <br>
+    <br>
+    <br>
+
+    <a href="{% url 'comision:miembrote_create' %}" class="btn btn-primary {% if total_miembros >= 3 %}disabled{% endif %}">
+        Agregar Miembro TE</a>
+
+    <div id="resultados">
+        <table class="table table-bordered table-sm" style="justify-content: center;width: 65%; margin-left: auto; margin-right: auto;">
+            <thead>
+                <tr>
+                    <th scope="col">CUIL</th>
+                    <th scope="col">Nombre</th>
+                    <th scope="col">Apellido</th>
+                    <th scope="col">Rol</th>
+                    <th scope="col">Fecha de Alta</th>
+                </tr>
+            </thead>
+            <tbody>
+            {% for miembrote in miembros_te %}
+                <tr>
+                    <td scope="row"><a href="{% url 'comision:miembrote_detail' miembrote.id %}">{{ miembrote.docente.cuil }}</a></td>
+                    <td>{{ miembrote.docente.nombre }}</td>
+                    <td>{{ miembrote.docente.apellido }}</td>
+                    <td>{{ miembrote.get_rol_display }}</td>
+                    <td>{{ miembrote.fecha_alta }}</td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+{% endblock %}

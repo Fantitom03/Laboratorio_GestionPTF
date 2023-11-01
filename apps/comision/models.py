@@ -1,10 +1,13 @@
 from django.db import models
 from apps.persona.models import Docente
+from django.core.exceptions import ValidationError
+from datetime import datetime
 
 class Miembro_CSTF (models.Model):
     docente = models.ForeignKey(Docente, on_delete=models.CASCADE)
     resolucion_asignacion = models.IntegerField(unique=True)
     fecha_alta = models.DateField()
+
 
 class Miembro_TE (models.Model):
     docente = models.ForeignKey(Docente, on_delete=models.CASCADE)

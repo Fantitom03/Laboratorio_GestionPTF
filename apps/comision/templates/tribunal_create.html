@@ -1,0 +1,77 @@
+{% extends "base/base.html" %}
+{% block titulo %}Crear Tribunal Evaluador{% endblock %}
+{% block contenido %}
+{% block tituloBarra %}Crear Tribunal Evaluador{% endblock %}
+<br><br><br>
+    <form method="post" action="{% url 'comision:tribunal_create' %}" enctype="multipart/form-data" id="tribunal-form">
+        {% csrf_token %}
+        {{ tribunal_form.as_p }}
+
+        <button type="button" id="agregar-miembro">Agregar</button>
+        <h3>Miembros Cargados:</h3>
+
+        <table id="miembros-table">
+            <!-- Aquí se mostrarán los miembros agregados -->
+        </table>
+
+        <button type="submit">Guardar</button>
+    </form>
+    <a href="{% url 'comision:tribunal_list' %}">VOLVER</a>
+
+    <script>
+    document.addEventListener('DOMContentLoaded', function() {
+        var selectMiembros = document.getElementById('id_miembros');
+        var agregarBtn = document.getElementById('agregar-miembro');
+        var miembrosTable = document.getElementById('miembros-table');
+
+        agregarBtn.addEventListener('click', function() {
+            var selectedDocente = selectMiembros.options[selectMiembros.selectedIndex];
+            var existingMembersCount = miembrosTable.rows.length;
+            if (selectedDocente.value && existingMembersCount < 3) {
+                var row = document.createElement('tr');
+                row.dataset.id = selectedDocente.value; // Almacena el ID del miembro del tribunal como un atributo de datos en la fila
+
+                var cellNombre = document.createElement('td');
+                cellNombre.textContent = selectedDocente.text;
+                row.appendChild(cellNombre);
+
+                var cellEliminar = document.createElement('td');
+                var eliminarBtn = document.createElement('button');
+                eliminarBtn.textContent = 'Eliminar';
+                eliminarBtn.type = 'button';
+                eliminarBtn.addEventListener('click', function() {
+                    row.remove();
+                });
+                cellEliminar.appendChild(eliminarBtn);
+                row.appendChild(cellEliminar);
+
+                miembrosTable.appendChild(row);
+
+                // Eliminar la opción seleccionada del combo
+                selectMiembros.remove(selectMiembros.selectedIndex);
+            } else {
+                alert('No se pueden agregar más de 3 miembros al tribunal evaluador.');
+            }
+        });
+
+        document.getElementById('tribunal-form').addEventListener('submit', function(event) {
+            var hiddenInput = document.createElement('input');
+            hiddenInput.type = 'hidden';
+            hiddenInput.name = 'miembros'; // Nombre del campo en el formulario
+            hiddenInput.value = obtenerIdsMiembros();
+            document.getElementById('tribunal-form').appendChild(hiddenInput);
+        });
+
+        function obtenerIdsMiembros() {
+            var ids = [];
+            var filas = document.getElementById('miembros-table').getElementsByTagName('tr');
+            for (var i = 0; i < filas.length; i++) {
+                var id = filas[i].dataset.id; // El ID del miembro del tribunal se almacena como un atributo de datos en la fila
+                ids.push(id);
+            }
+            return ids.join(','); // Devuelve los IDs como una cadena separada por comas
+        }
+    });
+    </script>
+    </html>
+{% endblock %}
