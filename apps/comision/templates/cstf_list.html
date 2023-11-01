@@ -1,0 +1,37 @@
+{% extends "base/base.html" %}
+{% block titulo %}Listado MiembrosCSTF{% endblock %}
+{% block contenido %}
+{% block tituloBarra %}Listado MiembrosCSTF{% endblock %}
+    <br>
+    <br>
+    <br>
+
+    <a href="{% url 'comision:cstf_create' %}" class="btn btn-primary">Agregar MiembroCSTF</a>
+
+    <div id="resultados">
+        <table class="table table-bordered table-sm" style="justify-content: center;width: 65%; margin-left: auto; margin-right: auto;">
+            <thead>
+                <tr>
+                    <th scope="col">CUIL</th>
+                    <th scope="col">Nombre</th>
+                    <th scope="col">Apellido</th>
+                    <th scope="col">Resolucion de Asignacion</th>
+                    <th scope="col">Fecha de Alta</th>
+                </tr>
+            </thead>
+            <tbody>
+            {% for miembrocstf in cstf %}
+                <tr>
+                    <td scope="row"><a href="{% url 'comision:cstf_detail' miembrocstf.id %}">{{ miembrocstf.docente.cuil }}</a></td>
+                    <td>{{ miembrocstf.docente.nombre }}</td>
+                    <td>{{ miembrocstf.docente.apellido }}</td>
+                    <td>{{ miembrocstf.resolucion_asignacion }}</td>
+                    <td>{{ miembrocstf.fecha_alta }}</td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+
+{% endblock %}
