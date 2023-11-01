@@ -15,44 +15,16 @@ def evaluacionPTF_detail(request, pk):
     return render(request, 'evaluacionPTF_detail.html', {'evaluacion': evaluacion})
 
 
-def evaluacionPTF_create(request):
-
+def evaluacionPTF_create (request):
     if request.method == 'POST':
         form = EvaluacionPTFForm(request.POST)
         if form.is_valid():
-            nueva_evaluacion = form.save(commit=False)
+            nueva_evaluacion = form.save(commit=True)
             nueva_evaluacion.clean()
             nueva_evaluacion.save()
-            messages.success(request, 'Se ha agregado correctamente la evaluación')
+            messages.success(request, 'Se ha agregado correctemente la evaluacion')
             return redirect(reverse('evaluacion:evaluacionPTF_list'))
-    else:
-        form = EvaluacionPTFForm()  # Pasa el proyecto como valor inicial
-
-    return render(request, 'evaluacionPTF_create.html', {'form': form})
-
-def evaluacionPTF_edit (request, pk):
-    evaluacion = get_object_or_404(EvaluacionPTF, pk=pk)
-    if request.method == 'POST':
-        form = EvaluacionPTFForm(request.POST, instance=evaluacion)
-        if form.is_valid():
-            evaluacion_editada = form.save(commit=True)
-            evaluacion = evaluacion_editada
-            evaluacion.save()
-            messages.success(request, 'Se ha actualizado correctamente la evaluación')
-            return redirect('evaluacion:evaluacionPTF_detail', pk=evaluacion.pk)
         else:
-            messages.error(request, 'Por favor, corrija los errores en el formulario.')
-    else:
-        form = EvaluacionPTFForm(instance=evaluacion)
-    return render(request, 'evaluacionPTF_edit.html', {'form': form, 'evaluacion': evaluacion})
-
-def evaluacionPTF_delete(request, pk):
-    if request.method == 'POST':
-        if 'id_evaluacion' in request.POST:
-            evaluacion = get_object_or_404(EvaluacionPTF, pk=pk)
-            evaluacion.delete()
-            messages.success(request, 'Se ha eliminado exitosamente la evaluacion')
-        else:
-            messages.error(request, 'Debe indicar qué evaluació desea eliminar')
-    return redirect(reverse('evaluacion:evaluacionPTF_list'))
+            form = EvaluacionPTFForm()
+        return render(request, 'evaluacionPTF_create.html',)
 

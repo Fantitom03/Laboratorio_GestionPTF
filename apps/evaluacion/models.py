@@ -10,10 +10,10 @@ class EvaluacionPTF(models.Model):
     )
 
     proyecto_TF = models.ForeignKey(Proyecto_TF, on_delete = models.CASCADE)
-    informe = models.FileField(blank=True, null=True)
+    informe = models.FileField(null=True)
     fecha_evaluacion = models.DateField()
     estado = models.CharField(max_length=20, choices=estado_op)
-    observaciones = models.CharField(max_length=500, blank=True, null=True)
+    observaciones = models.CharField(max_length=500, null=True)
 
 
 class EvaluacionITF(models.Model):

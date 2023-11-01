@@ -25,6 +25,8 @@ class Proyecto_TF(models.Model):
     cstf = models.ForeignKey(Miembro_CSTF, on_delete=models.CASCADE)
     te_asignado = models.ForeignKey(TribunalEvaluador, on_delete=models.CASCADE)
 
+    def __str__(self):
+        return f'Proyecto TF de {self.matricula}'
 
 
 class Proyecto_TF_Alumno(models.Model):
@@ -46,6 +48,8 @@ class Informe_TF(models.Model):
     estado = models.CharField(max_length=20, choices=estado_op)
     observaciones = models.CharField(max_length=500, null=True)
 
+    def __str__(self):
+        return f'Informe TF de {self.matricula}'
 
 
 """
