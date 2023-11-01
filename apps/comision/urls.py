@@ -7,8 +7,8 @@ urlpatterns = [
     # URLs para MiembroCSTF
     path('cstf/', views.miembrocstf_list, name='cstf_list'),
     path('cstf/nuevo/', views.miembrocstf_create, name='cstf_create'),
-    path('cstf/<int:pk>/', views.miembrocstf_detail, name='cstf_detail'),
-    path('cstf_delete/<int:pk>/', views.miembrocstf_delete, name='cstf_delete'),
+    path('cstf/<int:pk>, <int:tpk>/', views.miembrocstf_detail, name='cstf_detail'),
+    path('cstf_delete/<int:pk>, <int:tpk>/', views.miembrocstf_delete, name='cstf_delete'),
     path('cstf_edit/<int:pk>/', views.miembrocstf_edit, name='cstf_edit'),
 
     # URLs para MiembrosTE

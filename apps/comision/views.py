@@ -83,25 +83,26 @@ def miembro_te_list(request):
 
 def miembro_te_detail(request, pk):
     miembrote = get_object_or_404(Miembro_TE, pk=pk)
-    return render(request, 'miembrote_detail.html', {'miembrote': miembrote})
+    tribunal = miembrote.tribunal  # Obtener el objeto de tribunal asociado al miembro del tribunal
+    return render(request, 'miembrote_detail.html', {'miembrote': miembrote, 'tribunal': tribunal})
 
 # Vista para actualizar un miembro de TribunalEvaluador existente
-def miembro_te_edit(request, pk):
+def miembro_te_edit(request, pk, tribunal):
     miembrote = get_object_or_404(Miembro_TE, pk=pk)
     if request.method == 'POST':
         form = Miembro_TE_Form(request.POST, instance=miembrote)
         if form.is_valid():
             form.save()
             messages.success(request, 'Se ha actualizado correctamente el miembro del tribunal evaluador')
-            return redirect('comision:miembrote_detail', pk=miembrote.pk)
+            return redirect('comision:tribunal_detail', pk=miembrote.pk)
         else:
             messages.error(request, 'Por favor, corrija los errores en el formulario.')
     else:
         form = Miembro_TE_Form(instance=miembrote)
-    return render(request, 'miembrote_edit.html', {'form': form, 'miembrote': miembrote})
+    return redirect('comision:tribunal_detail', tpk=tribunal)
 
 # Vista para eliminar un miembro de TribunalEvaluador existente
-def miembro_te_delete(request, pk):
+def miembro_te_delete(request, pk, tribunal):
     if request.method == 'POST':
         if 'id_miembrote' in request.POST:
             miembrote = get_object_or_404(Miembro_TE, pk=pk)
@@ -109,35 +110,30 @@ def miembro_te_delete(request, pk):
             messages.success(request, 'Se ha eliminado exitosamente el miembro del tribunal evaluador')
         else:
             messages.error(request, 'Debe indicar qué miembro del tribunal evaluador desea eliminar')
-    return redirect(reverse('comision:miembrote_list'))
+    return redirect('comision:tribunal_detail', tpk=tribunal)
 
 def tribunal_create(request):
-    MiembroTEFormSet = modelformset_factory(
-        Miembro_TE,
-        form=Miembro_TE_Form,
-        extra=3  # Puedes establecer aquí el número máximo de miembros que puedes agregar
-    )
-
     if request.method == 'POST':
         tribunal_form = TribunalEvaluadorForm(request.POST, request.FILES)
-        miembro_formset = MiembroTEFormSet(request.POST, queryset=Miembro_TE.objects.none())
+        if tribunal_form.is_valid():
+            tribunal = tribunal_form.save(commit=False)
+            tribunal.save()
 
-        if tribunal_form.is_valid() and miembro_formset.is_valid():
-            tribunal = tribunal_form.save()
-            miembro_formset.save(commit=True)
-            for form in miembro_formset.forms:
-                if form.cleaned_data.get('docente') and form.cleaned_data.get('fecha_alta'):
-                    miembro = form.save(commit=True)
-                    miembro.tribunal = tribunal
-                    miembro.save()
+            # Obtener los IDs de los miembros del tribunal desde el formulario
+            miembros_ids = request.POST.get('miembros', '').split(',')
+
+            # Relacionar los miembros del tribunal con el Tribunal Evaluador
+            for miembro_id in miembros_ids:
+                miembro = Miembro_TE.objects.get(id=miembro_id)
+                miembro.tribunal = tribunal
+                miembro.save()
 
             messages.success(request, 'Tribunal evaluador creado correctamente.')
             return redirect('comision:tribunal_list', pk=tribunal.pk)
     else:
         tribunal_form = TribunalEvaluadorForm()
-        miembro_formset = MiembroTEFormSet(queryset=Miembro_TE.objects.none())
 
-    return render(request, 'tribunal_create.html', {'tribunal_form': tribunal_form, 'miembro_formset': miembro_formset})
+    return render(request, 'tribunal_create.html', {'tribunal_form': tribunal_form})
 
 
 def tribunal_list(request):
@@ -151,30 +147,6 @@ def tribunal_detail(request, pk):
     return render(request, 'tribunal_detail.html', {'tribunal': tribunal, 'miembros_te': miembros_te})
 
 
-def tribunal_create(request):
-    if request.method == 'POST':
-        tribunal_form = TribunalEvaluadorForm(request.POST, request.FILES)
-        miembro_formset = Miembro_TE_Form(request.POST, prefix='miembro')
-
-        if tribunal_form.is_valid() and miembro_formset.is_valid():
-            tribunal = tribunal_form.save(commit=False)
-            tribunal.save()
-
-            # Obtener los miembros seleccionados
-            for form in miembro_formset:
-                if form.cleaned_data.get('docente') and form.cleaned_data.get('rol') and form.cleaned_data.get('fecha_alta'):
-                    miembro = form.save(commit=False)
-                    miembro.tribunal = tribunal
-                    miembro.fecha_alta = tribunal.fecha_disposicion  # La fecha de alta es la misma que la del tribunal
-                    miembro.save()
-
-            messages.success(request, 'Tribunal evaluador creado correctamente.')
-            return redirect('comision:tribunal_detail', pk=tribunal.pk)
-    else:
-        tribunal_form = TribunalEvaluadorForm()
-        miembro_formset = Miembro_TE_Form(prefix='miembro')
-
-    return render(request, 'tribunal_create.html', {'tribunal_form': tribunal_form, 'miembro_formset': miembro_formset})
 
 def tribunal_edit(request, pk):
     tribunal = get_object_or_404(TribunalEvaluador, pk=pk)

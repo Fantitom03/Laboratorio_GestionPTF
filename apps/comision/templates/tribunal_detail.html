@@ -23,7 +23,7 @@
         <tbody>
         {% for miembrote in miembros_te %}
             <tr>
-                <td scope="row"><a href="{% url 'comision:miembrote_detail' miembrote.id %}">{{ miembrote.docente.cuil }}</a></td>
+                <td scope="row"><a href="{% url 'comision:miembrote_detail' miembrote.id%}">{{ miembrote.docente.cuil }}</a></td>
                 <td>{{ miembrote.docente.nombre }}</td>
                 <td>{{ miembrote.docente.apellido }}</td>
                 <td>{{ miembrote.get_rol_display }}</td>
