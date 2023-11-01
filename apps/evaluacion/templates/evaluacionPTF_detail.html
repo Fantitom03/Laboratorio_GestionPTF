@@ -1,0 +1,7 @@
+{% extends "base/base.html" %}
+{% block titulo %}Detalles del Proyecto{{ proyecto.titulo_ptf }}{% endblock %}
+{% block contenido %}
+  <h2>{{ proyecto.titulo_ptf }}</h2>
+  <p>Descripción: {{ proyecto.descripcion }}</p>
+  <!-- Mostrar detalles del proyecto y evaluación aquí -->
+{% endblock %}

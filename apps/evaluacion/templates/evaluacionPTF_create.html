@@ -1,0 +1,42 @@
+{% extends "base/base.html" %}
+{% block titulo %}Evaluar Proyecto{{ proyecto.titulo_ptf }}{% endblock %}
+{% block contenido %}
+  <h2>Evaluación del Proyecto {{ proyecto.titulo_ptf }}</h2>
+  <!-- Formulario para evaluar el proyecto -->
+  <form method="post" action="{% url 'evaluaciones:proyecto_evaluar' proyecto.pk %}">
+    {% csrf_token %}
+    <!-- Campo de estado -->
+    <label for="id_estado">Estado:</label>
+    <select id="id_estado" name="estado">
+      <option value="aprobado">Aprobado</option>
+      <option value="rechazado">Rechazado</option>
+      <option value="observado">Observado</option>
+    </select>
+
+    <!-- Campo de observaciones (con id para seleccionarlo con JavaScript) -->
+    <label for="id_observaciones">Observaciones:</label>
+    <textarea id="id_observaciones" name="observaciones" rows="4" cols="50"></textarea>
+
+    <!-- Botón de enviar -->
+    <button type="submit">Evaluar Proyecto</button>
+  </form>
+
+  <script>
+    // Obtener el campo de estado y el campo de observaciones por su id
+    var estadoSelect = document.getElementById("id_estado");
+    var observacionesTextarea = document.getElementById("id_observaciones");
+
+    // Función para habilitar o deshabilitar el campo de observaciones según el estado seleccionado
+    function habilitarObservaciones() {
+      if (estadoSelect.value === "observado") {
+        observacionesTextarea.disabled = false;
+      } else {
+        observacionesTextarea.disabled = true;
+      }
+    }
+
+    // Llamar a la función al cargar la página y cuando se cambie el estado seleccionado
+    habilitarObservaciones();
+    estadoSelect.addEventListener("change", habilitarObservaciones);
+  </script>
+{% endblock %}

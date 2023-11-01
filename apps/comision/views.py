@@ -82,9 +82,9 @@ def miembro_te_list(request):
     return render(request, 'miembrote_list.html', {'miembros_te': miembros_te, 'total_miembros': total_miembros})
 
 def miembro_te_detail(request, pk):
-    miembrote = get_object_or_404(Miembro_TE, pk=pk)
-    tribunal = miembrote.tribunal  # Obtener el objeto de tribunal asociado al miembro del tribunal
-    return render(request, 'miembrote_detail.html', {'miembrote': miembrote, 'tribunal': tribunal})
+    miembro_te = get_object_or_404(Miembro_TE, pk=pk)
+    tribunales_pertenecientes = miembro_te.tribunalevaluador_set.all()  # Esto te dará todos los tribunales a los que pertenece este miembro
+    return render(request, 'miembrote_detail.html', {'miembro_te': miembro_te, 'tribunales': tribunales_pertenecientes})
 
 # Vista para actualizar un miembro de TribunalEvaluador existente
 def miembro_te_edit(request, pk, tribunal):
@@ -116,7 +116,7 @@ def tribunal_create(request):
     if request.method == 'POST':
         tribunal_form = TribunalEvaluadorForm(request.POST, request.FILES)
         if tribunal_form.is_valid():
-            tribunal = tribunal_form.save(commit=False)
+            tribunal = tribunal_form.save(commit=True)
             tribunal.save()
 
             # Obtener los IDs de los miembros del tribunal desde el formulario
@@ -127,7 +127,6 @@ def tribunal_create(request):
                 miembro = Miembro_TE.objects.get(id=miembro_id)
                 miembro.tribunal = tribunal
                 miembro.save()
-
             messages.success(request, 'Tribunal evaluador creado correctamente.')
             return redirect('comision:tribunal_list', pk=tribunal.pk)
     else:
@@ -143,8 +142,8 @@ def tribunal_list(request):
 
 def tribunal_detail(request, pk):
     tribunal = get_object_or_404(TribunalEvaluador, pk=pk)
-    miembros_te = tribunal.miembros.all()
-    return render(request, 'tribunal_detail.html', {'tribunal': tribunal, 'miembros_te': miembros_te})
+    miembrote = tribunal.miembros.all()
+    return render(request, 'tribunal_detail.html', {'tribunal': tribunal, 'miembrote': miembrote})
 
 
 

@@ -1,0 +1,15 @@
+{% extends "base/base.html" %}
+{% block titulo %}Listado de Proyectos{% endblock %}
+{% block contenido %}
+  <br><br><br>
+  <h2>Listado de Proyectos</h2>
+  <ul>
+    {% for proyecto in proyectos %}
+      <li>{{ proyecto.titulo_ptf }}</li>
+      <li>{{ proyecto.fecha_presentacion }}</li>
+
+    {% empty %}
+      <li>No hay proyectos disponibles.</li>
+    {% endfor %}
+  </ul>
+{% endblock %}
