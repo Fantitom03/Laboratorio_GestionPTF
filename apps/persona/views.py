@@ -1,8 +1,8 @@
-from django.shortcuts import render, redirect , get_object_or_404, redirect
+from django.shortcuts import render, redirect, get_object_or_404, redirect
 from django.urls import reverse
 from django.contrib import messages
 from .forms import DocenteForm
-from .models import Docente, Alumno, Asesor, Persona
+from .models import Docente, Alumno, Asesor
 
 # Vista para mostrar todos los docentes
 def docente_list(request):
@@ -54,8 +54,7 @@ def docente_edit(request, pk):
 def docente_delete(request, pk):
     if request.method == 'POST':
         if 'id_docente' in request.POST:
-            docente_id = request.POST['id_docente']
-            docente = get_object_or_404(Docente, pk=docente_id)
+            docente = get_object_or_404(Docente, pk=pk)
             nombre_persona = docente.nombre
             docente.delete()
             messages.success(request, 'Se ha eliminado exitosamente el Docente {}'.format(nombre_persona))
