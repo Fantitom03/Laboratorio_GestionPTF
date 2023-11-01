@@ -2,13 +2,13 @@ from django.shortcuts import render, get_object_or_404, redirect
 from django.urls import reverse
 from django.contrib import messages
 from .forms import Proyecto_TF_AlumnoForm, Proyecto_TF_Form
-from .models import Proyecto_TF, Proyecto_TF_Alumno
+from .models import Proyecto_TF_Alumno
 from django.contrib.auth import authenticate, login, logout
 
 
 def proyectotf_list(request):
     proyectotfs = Proyecto_TF_Alumno.objects.all()
-    return render(request, 'proyectotf_list.html', {'proyectotfs': proyectotfs})
+    return render(request, 'proyectotf_list.html', {'proyectotfs': proyectotfs })
 
 
 
@@ -18,28 +18,30 @@ def proyectotf_detail(request, pk):
     return render(request, 'proyectotf_detail.html', {'proyectotf': proyectotf})
 
 
-# Vista para crear un nuevo proyectotf
-def proyectotf_miembros_create(request):
-    if request.method == 'POST':
-        form = Proyecto_TF_AlumnoForm(request.POST)
-        if form.is_valid():
-            nuevo_proyectotf = form.save(commit=True)
-            messages.success(request, 'Se ha agregado correctamente el proyectotf {}'.format(nuevo_proyectotf))
-            return redirect(reverse('proyectotf:proyectotf_list'))
-    else:
-        form = Proyecto_TF_AlumnoForm()
-    return render(request, 'proyectotf_miembros_create.html', {'form': form})
-
 def proyectotf_create(request):
     if request.method == 'POST':
         form = Proyecto_TF_Form(request.POST)
         if form.is_valid():
             nuevo_proyectotf = form.save(commit=True)
             messages.success(request, 'Se ha agregado correctamente el proyectotf {}'.format(nuevo_proyectotf))
-            return render(request,'proyectotf_miembros_create.html', {'form': form})
+            return render(request, 'proyectotf_miembros_create.html', {'form': form})
     else:
         form = Proyecto_TF_Form()
     return render(request, 'proyectotf_create.html', {'form': form})
+
+# Vista para crear un nuevo proyectotf
+def proyectotf_miembros_create(request):
+    if request.method == 'POST':
+        form = Proyecto_TF_AlumnoForm(request.POST)
+        if form.is_valid():
+            nuevo_proyectotf_miembros = form.save(commit=True)
+            messages.success(request, 'Se ha agregado correctamente el proyectotf {}'.format(nuevo_proyectotf_miembros))
+            return redirect(reverse('proyectotf:proyectotf_list'))
+    else:
+        form = Proyecto_TF_AlumnoForm()
+    return render(request, 'proyectotf_miembros_create.html', {'form': form})
+
+
 
 # Vista para actualizar un proyectotf existente
 def proyectotf_edit(request, pk):
