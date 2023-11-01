@@ -9,9 +9,7 @@ class Miembro_CSTF_Form(forms.ModelForm):
 class Miembro_TE_Form(forms.ModelForm):
     class Meta:
         model = Miembro_TE
-        fields = ('docente', 'fecha_alta')
-
-        rol = forms.ChoiceField(choices=Miembro_TE.rol_op, widget=forms.Select(attrs={'class': 'form-control'}))
+        fields = ('docente', 'fecha_alta', 'rol')
 
 class TribunalEvaluadorForm(forms.ModelForm):
     class Meta:

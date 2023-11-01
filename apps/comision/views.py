@@ -124,15 +124,15 @@ def tribunal_create(request):
 
         if tribunal_form.is_valid() and miembro_formset.is_valid():
             tribunal = tribunal_form.save()
-            miembro_formset.save(commit=False)
+            miembro_formset.save(commit=True)
             for form in miembro_formset.forms:
                 if form.cleaned_data.get('docente') and form.cleaned_data.get('fecha_alta'):
-                    miembro = form.save(commit=False)
+                    miembro = form.save(commit=True)
                     miembro.tribunal = tribunal
                     miembro.save()
 
             messages.success(request, 'Tribunal evaluador creado correctamente.')
-            return redirect('comision:tribunal_detail', pk=tribunal.pk)
+            return redirect('comision:tribunal_list', pk=tribunal.pk)
     else:
         tribunal_form = TribunalEvaluadorForm()
         miembro_formset = MiembroTEFormSet(queryset=Miembro_TE.objects.none())
