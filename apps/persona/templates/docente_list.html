@@ -21,7 +21,7 @@
             <tbody>
             {% for docente in docentes %}
                 <tr>
-                    <td scope="row">{{ docente.dni }}</td>
+                    <td scope="row"><a href="{% url 'persona:docente_detail' docente.id %}">{{ docente.dni }}</a></td>
                     <td>{{ docente.cuil }}</td>
                     <td>{{ docente.nombre }}</td>
                     <td>{{ docente.apellido }}</td>

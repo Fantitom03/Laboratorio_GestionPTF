@@ -1,4 +1,6 @@
-from django.shortcuts import render, get_object_or_404, redirect
+from django.shortcuts import render, redirect , get_object_or_404, redirect
+from django.urls import reverse
+from django.contrib import messages
 from .forms import DocenteForm
 from .models import Docente, Alumno, Asesor, Persona
 
@@ -20,24 +22,43 @@ def docente_create(request):
     if request.method == 'POST':
         form = DocenteForm(request.POST)
         if form.is_valid():
-            form.save()
-            return redirect('docente_list')
+            nuevo_docente = form.save(commit=True)
+            messages.success(request, 'Se ha agregado correctamente el docente {}'.format(nuevo_docente))
+            return redirect(reverse('persona:docente_list'))
     else:
         form = DocenteForm()
     return render(request, 'docente_create.html', {'form': form})
 
 
 # Vista para actualizar un docente existente
-def docente_update(request, pk):
+def docente_edit(request, pk):
     docente = get_object_or_404(Docente, pk=pk)
-    # Lógica para procesar el formulario de actualización de docente
-    # ...
-    return render(request, 'docente_form.html', {'docente': docente})
+    if request.method == 'POST':
+        form = DocenteForm(request.POST, instance=docente)
+        if form.is_valid():
+            docente_editado = form.save(commit=True)
+            docente = docente_editado
+            docente.save()
+            messages.success(request, 'Se ha actualizado correctamente el Docente')
+            return redirect('persona:docente_detail', pk=docente.pk)
+        else:
+            messages.error(request, 'Por favor, corrija los errores en el formulario.')
+    else:
+        form = DocenteForm(instance=docente)
+    return render(request, 'docente_edit.html', {'form': form, 'docente': docente})
+
+
 
 
 # Vista para eliminar un docente existente
 def docente_delete(request, pk):
-    docente = get_object_or_404(Docente, pk=pk)
-    docente.delete()
-    # Redirigir a la lista de docentes después de la eliminación
-    return redirect('docente_list')
+    if request.method == 'POST':
+        if 'id_docente' in request.POST:
+            docente_id = request.POST['id_docente']
+            docente = get_object_or_404(Docente, pk=docente_id)
+            nombre_persona = docente.nombre
+            docente.delete()
+            messages.success(request, 'Se ha eliminado exitosamente el Docente {}'.format(nombre_persona))
+        else:
+            messages.error(request, 'Debe indicar qué Docente desea eliminar')
+    return redirect(reverse('persona:docente_list'))

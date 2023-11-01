@@ -2,11 +2,24 @@
 {% block titulo %}Detalle Docentes{% endblock %}
 {% block contenido %}
 {% block tituloBarra %}Detalle Docentes{% endblock %}
-    {{ }}
-    <h1>Docente: {{ docente.nombre }}</h1>
-    <p><strong> El docente fue creado correctamente </strong></p>
-    <a href="{% url 'persona:docente_detail' docente.id %}">{{ docente.dni }}</a>
+    <br>
+    <br>
+    <h1>Docente: {{ docente.nombre }} {{ docente.apellido }}</h1>
+    <p><strong> Datos del docente: </strong></p>
+    <p>Nombre: {{ docente.nombre }}</p>
+    <p>Apellido: {{ docente.apellido }}</p>
+    <p>DNI: {{ docente.dni }}</p>
+    <p>CUIL: {{ docente.cuil }}</p>
 
 
+    <form action="{% url 'persona:docente_delete' docente.id %}" method="POST">
+        {% csrf_token %}
+        <input type="hidden" name="id_docente" value="{{ docente.id }}">
+        <input type="submit", value="Eliminar">
+        <a href="{% url 'persona:docente_edit' docente.id %}" class="btn btn-primary">Editar</a>
+    </form>
+    <br>
+    <br>
+    <a href="{% url 'persona:docente_list' %}">VOLVER</a>
 
 {% endblock %}
