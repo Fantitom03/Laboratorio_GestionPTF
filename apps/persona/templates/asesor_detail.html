@@ -1,0 +1,25 @@
+{% extends "base/base.html" %}
+{% block titulo %}Detalle Asesor{% endblock %}
+{% block contenido %}
+{% block tituloBarra %}Detalle Asesor{% endblock %}
+    <br>
+    <br>
+    <h1>Asesor: {{ asesor.nombre }} {{ asesor.apellido }}</h1>
+    <p><strong> Datos del asesor: </strong></p>
+    <p>Nombre: {{ asesor.nombre }}</p>
+    <p>Apellido: {{ asesor.apellido }}</p>
+    <p>DNI: {{ asesor.dni }}</p>
+    <p>CURRICULUM: {{ asesor.curriculum }}</p>
+
+
+    <form action="{% url 'persona:asesor_delete' asesor.id %}" method="POST">
+        {% csrf_token %}
+        <input type="hidden" name="id_asesor" value="{{ asesor.id }}">
+        <input type="submit", value="Eliminar">
+        <a href="{% url 'persona:asesor_edit' asesor.id %}" class="btn btn-primary">Editar</a>
+    </form>
+    <br>
+    <br>
+    <a href="{% url 'persona:asesor_list' %}">VOLVER</a>
+
+{% endblock %}

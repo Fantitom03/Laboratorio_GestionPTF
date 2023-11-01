@@ -4,12 +4,27 @@ from . import views
 app_name = 'persona'
 
 urlpatterns = [
-    #persona views
+    #docente views
     path('docente/', views.docente_list, name='docente_list'),
     path('docente/nuevo/', views.docente_create, name='docente_create'),
     path('docente/<int:pk>/', views.docente_detail, name='docente_detail'),
     path('docente_delete/<int:pk>/', views.docente_delete, name='docente_delete'),
     path('docente_edit/<int:pk>/',views.docente_edit, name='docente_edit'),
+
+    #alumno views
+    path('alumno/', views.alumno_list, name='alumno_list'),
+    path('alumno/nuevo/', views.alumno_create, name='alumno_create'),
+    path('alumno/<int:pk>/', views.alumno_detail, name='alumno_detail'),
+    path('alumno_delete/<int:pk>/', views.alumno_delete, name='alumno_delete'),
+    path('alumno_edit/<int:pk>/',views.alumno_edit, name='alumno_edit'),
+
+    #asesor views
+    path('asesor/', views.asesor_list, name='asesor_list'),
+    path('asesor/nuevo/', views.asesor_create, name='asesor_create'),
+    path('asesor/<int:pk>/', views.asesor_detail, name='asesor_detail'),
+    path('asesor_delete/<int:pk>/', views.asesor_delete, name='asesor_delete'),
+    path('asesor_edit/<int:pk>/',views.asesor_edit, name='asesor_edit'),
+
 
 ]
 
