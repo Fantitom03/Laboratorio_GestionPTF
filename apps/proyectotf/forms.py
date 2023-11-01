@@ -10,6 +10,6 @@ class Proyecto_TF_AlumnoForm(forms.ModelForm):
 class Proyecto_TF_Form(forms.ModelForm):
     class Meta:
         model = Proyecto_TF
-        fields = ('fecha_presentacion', 'director', 'co_director', 'asesor', 'titulo_ptf', 'descripcion', 'archivos_adjuntos', 'certificado_analitico', 'nota_aceptacion_director', 'cstf', 'te_asignado')
+        fields = ('fecha_presentacion', 'director', 'co_director', 'asesor', 'titulo_ptf', 'descripcion', 'cstf', 'te_asignado')
 
 
